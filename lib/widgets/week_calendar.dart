@@ -48,96 +48,114 @@ class WeekCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // XP style — игнорируем тему, везде классический вид
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFFECE9D8), // Фон панели XP
-        border: Border(
-          bottom: BorderSide(
-            color: const Color(0xFF003399),
-            width: 2,
+        color: isDark ? const Color(0xFF1E293B) : Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: isDark ? Colors.black12 : Colors.grey.shade100,
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
-        ),
+        ],
       ),
       child: Column(
         children: [
+          // Материал дизайн — большие круглые кнопки
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // XP-стрелка влево (как в проводнике)
-              GestureDetector(
-                onTap: onPrevWeek,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE1DFD4),
-                    border: Border.all(color: const Color(0xFFACA899), width: 1),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: const Icon(
-                    Icons.chevron_left,
-                    color: Color(0xFF1F3A6B),
-                    size: 20,
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onPrevWeek,
+                  borderRadius: BorderRadius.circular(30),
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: isDark ? Colors.grey.withValues(alpha: 0.15) : Colors.grey.shade100,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.chevron_left,
+                      color: isDark ? Colors.grey.shade300 : const Color(0xFF1E88E5),
+                      size: 24,
+                    ),
                   ),
                 ),
               ),
-              // XP-стиль для диапазона недели (как заголовок окна)
+              // Материал стиль — карточка с тенью
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                decoration: const BoxDecoration(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Color(0xFF0058E3), Color(0xFF2560C9)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+                    colors: isDark
+                        ? [const Color(0xFF0D47A1), const Color(0xFF1565C0)]
+                        : [const Color(0xFF42A5F5), const Color(0xFF1E88E5)],
                   ),
+                  borderRadius: BorderRadius.circular(32),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withValues(alpha: 0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Text(
                   _getWeekRange(),
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
                     color: Colors.white,
-                    fontFamily: 'Tahoma',
+                    fontFamily: 'Roboto',
+                    letterSpacing: 0.5,
                   ),
                 ),
               ),
-              // XP-стрелка вправо
-              GestureDetector(
-                onTap: onNextWeek,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE1DFD4),
-                    border: Border.all(color: const Color(0xFFACA899), width: 1),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: const Icon(
-                    Icons.chevron_right,
-                    color: Color(0xFF1F3A6B),
-                    size: 20,
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onNextWeek,
+                  borderRadius: BorderRadius.circular(30),
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: isDark ? Colors.grey.withValues(alpha: 0.15) : Colors.grey.shade100,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.chevron_right,
+                      color: isDark ? Colors.grey.shade300 : const Color(0xFF1E88E5),
+                      size: 24,
+                    ),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
-          // XP-статус бар для типа недели
+          const SizedBox(height: 12),
+          // Материал стиль — чип
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFFE1DFD4),
-              border: Border.all(color: const Color(0xFFACA899), width: 1),
-              borderRadius: BorderRadius.circular(4),
+              color: isDark ? Colors.blue.withValues(alpha: 0.15) : Colors.blue.shade50,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: isDark ? Colors.blue.withValues(alpha: 0.3) : Colors.blue.shade200,
+                width: 0.5,
+              ),
             ),
             child: Text(
               _getWeekType(),
-              style: const TextStyle(
-                fontSize: 11,
+              style: TextStyle(
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF1E2F5A),
-                fontFamily: 'Tahoma',
+                color: isDark ? Colors.blue.shade300 : const Color(0xFF1565C0),
+                fontFamily: 'Roboto',
               ),
             ),
           ),

@@ -9,81 +9,70 @@ class ResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // XP style — игнорируем тему, везде классический вид
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color(0xFFECE9D8), // Фон окна XP
-        border: Border.all(color: const Color(0xFF003399), width: 1.5),
-        borderRadius: BorderRadius.circular(6),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x40000000),
-            offset: Offset(1, 1),
-            blurRadius: 1,
-          ),
-        ],
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(6),
-          onTap: onTap,
-          splashColor: const Color(0xFF0058E3).withValues(alpha: 0.2),
-          highlightColor: const Color(0xFF0058E3).withValues(alpha: 0.1),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              children: [
-                // XP-стиль иконки (как в панели управления)
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE1DFD4),
-                    border: Border.all(color: const Color(0xFFACA899), width: 1),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: const Icon(
-                    Icons.search,
-                    color: Color(0xFF1F3A6B),
-                    size: 18,
-                  ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onTap,
+        splashColor: isDark ? Colors.blue.shade800 : Colors.blue.shade100,
+        highlightColor: isDark ? Colors.blue.shade900 : Colors.blue.shade50,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              // Material стиль — круглая иконка с фоном
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.blue.withValues(alpha: 0.15) : Colors.blue.shade50,
+                  shape: BoxShape.circle,
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                child: Icon(
+                  Icons.search,
+                  color: isDark ? Colors.blue.shade300 : const Color(0xFF1E88E5),
+                  size: 22,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? Colors.white : Colors.grey.shade800,
+                        fontFamily: 'Roboto',
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    if (subtitle != null && subtitle!.isNotEmpty)
                       Text(
-                        title,
-                        style: const TextStyle(
+                        subtitle!,
+                        style: TextStyle(
                           fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF1E2F5A),
-                          fontFamily: 'Tahoma',
+                          color: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
+                          fontFamily: 'Roboto',
                         ),
                       ),
-                      if (subtitle != null && subtitle!.isNotEmpty)
-                        Text(
-                          subtitle!,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: Color(0xFF555555),
-                            fontFamily: 'Tahoma',
-                          ),
-                        ),
-                    ],
-                  ),
+                  ],
                 ),
-                // XP-стрелка (как в меню "Пуск")
-                const Icon(
-                  Icons.chevron_right,
-                  color: Color(0xFF1F3A6B),
-                  size: 18,
-                ),
-              ],
-            ),
+              ),
+              // Material стиль — стрелка с анимацией
+              Icon(
+                Icons.chevron_right,
+                color: isDark ? Colors.grey.shade500 : Colors.grey.shade400,
+                size: 22,
+              ),
+            ],
           ),
         ),
       ),

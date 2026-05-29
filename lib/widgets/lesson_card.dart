@@ -11,71 +11,71 @@ class LessonCard extends StatelessWidget {
     final type = lesson.lessonType.toLowerCase();
 
     if (type.contains('лекц')) {
-      return (const Color(0xFFD4E3FD), const Color(0xFF003399), Icons.menu_book);
+      return (const Color(0xFFE3F2FD), const Color(0xFF1565C0), Icons.menu_book);
     } else if (type.contains('практик')) {
-      return (const Color(0xFFD0F0D0), const Color(0xFF006600), Icons.people);
+      return (const Color(0xFFE8F5E9), const Color(0xFF2E7D32), Icons.people);
     } else if (type.contains('лабор')) {
-      return (const Color(0xFFFFE5B4), const Color(0xFF804000), Icons.science);
+      return (const Color(0xFFFFF3E0), const Color(0xFFE65100), Icons.science);
     } else if (type.contains('зачет') || type.contains('экзамен')) {
-      return (const Color(0xFFFFD2D2), const Color(0xFF990000), Icons.assignment_turned_in);
+      return (const Color(0xFFFFEBEE), const Color(0xFFC62828), Icons.assignment_turned_in);
     }
-    return (const Color(0xFFE8E8E8), const Color(0xFF444444), Icons.school);
+    return (const Color(0xFFF5F5F5), const Color(0xFF616161), Icons.school);
   }
 
   @override
   Widget build(BuildContext context) {
     final typeStyle = _getTypeStyle();
-    // XP style — игнорируем тему, везде классический вид
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFECE9D8), // Фон окна XP
-        borderRadius: BorderRadius.circular(6), // Минимальное скругление
-        border: Border.all(color: const Color(0xFF003399), width: 2),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x40000000),
-            offset: Offset(2, 2),
-            blurRadius: 2,
-          ),
-        ],
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 0),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // XP-заголовок (синий градиент)
+          // Material заголовок с градиентом
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: const BoxDecoration(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF0058E3), Color(0xFF2560C9)],
+                colors: isDark
+                    ? [const Color(0xFF0D47A1), const Color(0xFF1565C0)]
+                    : [const Color(0xFF42A5F5), const Color(0xFF1E88E5)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
               ),
             ),
             child: Row(
               children: [
-                const Icon(Icons.tv, color: Colors.white, size: 14),
+                const Icon(Icons.schedule, color: Colors.white, size: 16),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     lesson.pairNumberDisplay.isNotEmpty ? lesson.pairNumberDisplay : 'Пара',
                     style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
                       color: Colors.white,
-                      fontFamily: 'Tahoma',
+                      fontFamily: 'Roboto',
+                      letterSpacing: 0.5,
                     ),
                   ),
                 ),
-                const Icon(Icons.access_time, color: Colors.white, size: 12),
-                const SizedBox(width: 4),
+                const Icon(Icons.access_time, color: Colors.white, size: 14),
+                const SizedBox(width: 6),
                 Text(
                   lesson.formattedTime,
                   style: const TextStyle(
-                    fontSize: 11,
+                    fontSize: 12,
                     color: Colors.white,
-                    fontFamily: 'Tahoma',
+                    fontFamily: 'Roboto',
                   ),
                 ),
               ],
@@ -83,40 +83,44 @@ class LessonCard extends StatelessWidget {
           ),
           // Тело карточки
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   lesson.discipline,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1E2F5A),
-                    fontFamily: 'Tahoma',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: isDark ? Colors.white : Colors.grey.shade800,
+                    fontFamily: 'Roboto',
+                    letterSpacing: 0.3,
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Тег типа занятия (в стиле XP)
+                // Material стиль — чип типа занятия
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     color: typeStyle.$1,
-                    border: Border.all(color: typeStyle.$2, width: 1),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: typeStyle.$2.withValues(alpha: 0.3),
+                      width: 0.5,
+                    ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(typeStyle.$3, size: 12, color: typeStyle.$2),
-                      const SizedBox(width: 4),
+                      Icon(typeStyle.$3, size: 14, color: typeStyle.$2),
+                      const SizedBox(width: 6),
                       Text(
                         lesson.lessonType.isNotEmpty ? lesson.lessonType : 'Занятие',
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: typeStyle.$2,
-                          fontFamily: 'Tahoma',
+                          fontFamily: 'Roboto',
                         ),
                       ),
                     ],
@@ -126,16 +130,16 @@ class LessonCard extends StatelessWidget {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      const Icon(Icons.group, size: 14, color: Color(0xFF1F3A6B)),
-                      const SizedBox(width: 8),
+                      Icon(Icons.group, size: 16, color: isDark ? Colors.grey.shade400 : Colors.grey.shade600),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           lesson.groupName!,
-                          style: const TextStyle(
-                            fontSize: 12,
+                          style: TextStyle(
+                            fontSize: 13,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xFF1E2F5A),
-                            fontFamily: 'Tahoma',
+                            color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
+                            fontFamily: 'Roboto',
                           ),
                         ),
                       ),
@@ -147,28 +151,28 @@ class LessonCard extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.person, size: 14, color: Color(0xFF1F3A6B)),
-                      const SizedBox(width: 8),
+                      Icon(Icons.person, size: 16, color: isDark ? Colors.grey.shade400 : Colors.grey.shade600),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               lesson.lecturerDisplay,
-                              style: const TextStyle(
-                                fontSize: 12,
+                              style: TextStyle(
+                                fontSize: 13,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xFF1E2F5A),
-                                fontFamily: 'Tahoma',
+                                color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
+                                fontFamily: 'Roboto',
                               ),
                             ),
                             if (lesson.lecturerRank != null && lesson.lecturerRank!.isNotEmpty)
                               Text(
                                 lesson.lecturerRank!,
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  color: Color(0xFF555555),
-                                  fontFamily: 'Tahoma',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: isDark ? Colors.grey.shade500 : Colors.grey.shade500,
+                                  fontFamily: 'Roboto',
                                 ),
                               ),
                           ],
@@ -181,15 +185,15 @@ class LessonCard extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      const Icon(Icons.location_on, size: 14, color: Color(0xFF1F3A6B)),
-                      const SizedBox(width: 8),
+                      Icon(Icons.location_on, size: 16, color: isDark ? Colors.grey.shade400 : Colors.grey.shade600),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           lesson.location,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: Color(0xFF1E2F5A),
-                            fontFamily: 'Tahoma',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                            fontFamily: 'Roboto',
                           ),
                         ),
                       ),
@@ -198,11 +202,6 @@ class LessonCard extends StatelessWidget {
                 ],
               ],
             ),
-          ),
-          // Нижняя синяя полоска XP
-          Container(
-            height: 3,
-            color: const Color(0xFF0058E3),
           ),
         ],
       ),

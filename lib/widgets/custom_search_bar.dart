@@ -39,63 +39,67 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    // XP не зависит от светлой/тёмной темы — всегда классика
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFECE9D8),
-        borderRadius: BorderRadius.circular(0), // XP style — прямые углы или едва скруглённые
-        border: Border.all(color: const Color(0xFF003399), width: 2),
-        boxShadow: const [
+        color: isDark ? const Color(0xFF1E293B) : Colors.white,
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+          width: 1,
+        ),
+        boxShadow: [
           BoxShadow(
-            color: Color(0x40000000),
-            offset: Offset(1, 1),
-            blurRadius: 1,
+            color: isDark ? Colors.black12 : Colors.grey.shade100,
+            blurRadius: 4,
+            offset: const Offset(0, 1),
           ),
         ],
       ),
       child: Row(
         children: [
-          // XP-стиль: иконка поиска как на старой панели задач
+          // Material стиль — круглая иконка с фоном
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.only(left: 16),
             child: widget.isLoading
-                ? const SizedBox(
-                    width: 18,
-                    height: 18,
+                ? SizedBox(
+                    width: 22,
+                    height: 22,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: Color(0xFF0058E3),
+                      color: isDark ? Colors.blue.shade300 : const Color(0xFF1E88E5),
                     ),
                   )
-                : const Icon(
+                : Icon(
                     Icons.search,
-                    color: Color(0xFF1F3A6B),
-                    size: 18,
+                    color: isDark ? Colors.grey.shade400 : Colors.grey.shade500,
+                    size: 22,
                   ),
           ),
-          // XP-стиль: поле ввода как в диалоговых окнах
+          // Material стиль — поле ввода
           Expanded(
             child: TextField(
               controller: _controller,
-              decoration: const InputDecoration(
-                hintText: '',
+              decoration: InputDecoration(
+                hintText: widget.hintText,
                 hintStyle: TextStyle(
-                  color: Color(0xFF6B6B6B),
-                  fontSize: 12,
-                  fontFamily: 'Tahoma',
+                  color: isDark ? Colors.grey.shade500 : Colors.grey.shade400,
+                  fontSize: 14,
+                  fontFamily: 'Roboto',
                 ),
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 10),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
               ),
-              style: const TextStyle(
-                fontSize: 12,
-                fontFamily: 'Tahoma',
-                color: Color(0xFF1E2F5A),
+              style: TextStyle(
+                fontSize: 14,
+                fontFamily: 'Roboto',
+                color: isDark ? Colors.white : Colors.grey.shade800,
               ),
               onChanged: _onSearchChanged,
             ),
           ),
-          // Кнопка "Очистить" в стиле XP
+          // Material стиль — кнопка очистки
           if (_controller.text.isNotEmpty)
             GestureDetector(
               onTap: () {
@@ -103,15 +107,11 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                 widget.onSearch('');
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: const Text(
-                  '✕',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF1F3A6B),
-                    fontFamily: 'Tahoma',
-                    fontWeight: FontWeight.bold,
-                  ),
+                padding: const EdgeInsets.only(right: 16),
+                child: Icon(
+                  Icons.clear,
+                  color: isDark ? Colors.grey.shade500 : Colors.grey.shade400,
+                  size: 20,
                 ),
               ),
             ),
