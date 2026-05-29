@@ -1,17 +1,3 @@
-# web
+Измененные виджеты
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img width="1916" height="848" alt="{0AF8622E-71F5-4942-A67F-18F0A64D7A26}" src="https://github.com/user-attachments/assets/68d4ab48-0bfc-4416-b4dc-496176ee77c5" />
