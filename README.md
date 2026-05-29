@@ -1,1 +1,3 @@
-<img width="1917" height="939" alt="{8FA0D321-713B-42F3-97BF-4E44C8F410E2}" src="https://github.com/user-attachments/assets/53b3b9dc-db15-41be-89f3-46ae559824bc" />
+Измененные виджеты
+
+<img width="1916" height="848" alt="{0AF8622E-71F5-4942-A67F-18F0A64D7A26}" src="https://github.com/user-attachments/assets/68d4ab48-0bfc-4416-b4dc-496176ee77c5" />
